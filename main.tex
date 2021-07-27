@@ -1,0 +1,55 @@
+% !TEX TS-program = xelatex
+% !BIB program = bibtex
+% !TEX encoding = UTF-8 Unicode
+
+\documentclass[
+  twoside,
+  openright,
+  degree    = master,               % degree = master | doctor
+  language  = chinese,              % language = chinese | english
+  fontset   = template,             % fontset = default | template | system | overleaf
+  watermark = true,                 % watermark = true | false
+  doi       = true,                 % doi = true | false
+]{ntuthesis}
+
+\input{ntusetup}
+
+\begin{document}
+
+% 封面與口試審定
+% Cover and Verification Letter
+\makecover                          % 論文封面（Cover）
+\makeverification                   % 口試委員審定書（Verification Letter）
+
+% 致謝與論文摘要
+% Acknowledgement and Abstract
+\input{front/acknowledgement}       % 致謝（Acknowledgement）
+\input{front/abstract}              % 摘要（Abstract）
+
+% 生成目錄與符號列表
+% Contents of Tables and Denotation
+\maketableofcontents                % 目錄（Table of Contents）
+\makelistoffigures                  % 圖目錄（List of Figures）
+\makelistoftables                   % 表目錄（List of Tables）
+
+% 論文內容
+% Contents of Thesis
+\mainmatter
+\input{contents/chapter01_introduction}
+\input{contents/chapter02_method}
+\input{contents/chapter03_dataset}
+\input{contents/chapter04_experiment}
+\input{contents/chapter05_result}
+\input{contents/chapter06_conclusions}
+
+% 參考文獻
+% References
+\refmatter
+\bibliographystyle{abbrv}
+\bibliography{back/references}
+
+% 附錄
+% Appendices
+\input{back/appendix01}
+
+\end{document}
