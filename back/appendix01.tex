@@ -1,5 +1,213 @@
 % !TeX root = ../main.tex
 
-\appendix{A}{Introduction}
-\section{Introduction}
-\section{Further Introduction}
+\appendix{A}{提出模型的完整訓練}
+
+
+\section{U-Net6 (Sattn) 的 L1 loss 下降趨勢}
+
+\begin{figure}[htbp]
+    \hfil
+    \begin{minipage}[t]{0.45\textwidth}
+        \centering
+        % time series body
+        \begin{tikzpicture}[scale=0.75]
+        \begin{semilogyaxis} [
+            xlabel = Epoch,
+            ylabel = Loss,
+        ]
+            \addlegendentry{Training loss}
+            \addplot table[mark=none, x=Step,y=Value, col sep=comma] {./numerical-data/chapter05_result/experiment-extra/6-Unet (Sattn_C-V4)/vocals/trnloss.csv};
+            \addlegendentry{Validation loss}
+            \addplot table[mark=none, x=Step,y=Value, col sep=comma] {./numerical-data/chapter05_result/experiment-extra/6-Unet (Sattn_C-V4)/vocals/valloss.csv};
+        \end{semilogyaxis}
+        \end{tikzpicture}
+        % time series body
+        \caption {U-Net6 (Sattn) 對主唱軌訓練的 loss 趨勢圖}
+        \label{a:6-Unet (Self-attntion):vocals}
+    \end{minipage}
+    \begin{minipage}[t]{0.45\textwidth}
+        \centering
+        % time series body
+        \begin{tikzpicture}[scale=0.75]
+        \begin{semilogyaxis} [
+            xlabel = Epoch,
+            ylabel = Loss,
+        ]
+            \addlegendentry{Training loss}
+            \addplot table[mark=none, x=Step,y=Value, col sep=comma] {./numerical-data/chapter05_result/experiment-extra/6-Unet (Sattn_C-V4)/accompaniment/trnloss.csv};
+            \addlegendentry{Validation loss}
+            \addplot table[mark=none, x=Step,y=Value, col sep=comma] {./numerical-data/chapter05_result/experiment-extra/6-Unet (Sattn_C-V4)/accompaniment/valloss.csv};
+        \end{semilogyaxis}
+        \end{tikzpicture}
+        % time series body
+        \caption {U-Net6 (Sattn) 對伴奏軌訓練的 loss 趨勢圖}
+        \label{a:6-Unet (Self-attntion):accompaniment}
+    \end{minipage}
+    \hfil
+\end{figure}
+
+\section{U-Net6 (DSConB) 的 L1 loss 下降趨勢}
+
+\begin{figure}[htbp]
+    \hfil
+    \begin{minipage}[t]{0.45\textwidth}
+        \centering
+        % time series body
+        \begin{tikzpicture}[scale=0.75]
+        \begin{semilogyaxis} [
+            xlabel = Epoch,
+            ylabel = Loss,
+        ]
+            \addlegendentry{Training loss}
+            \addplot table[mark=none, x=Step,y=Value, col sep=comma] {./numerical-data/chapter05_result/experiment-extra/6-Unet (DSConvB)/vocals/trnloss.csv};
+            \addlegendentry{Validation loss}
+            \addplot table[mark=none, x=Step,y=Value, col sep=comma] {./numerical-data/chapter05_result/experiment-extra/6-Unet (DSConvB)/vocals/valloss.csv};
+        \end{semilogyaxis}
+        \end{tikzpicture}
+        % time series body
+        \caption {U-Net6 (DSConvB) 對主唱軌訓練的 loss 趨勢圖}
+        \label{a:6-Unet (DSConvB):vocals}
+    \end{minipage}
+    \begin{minipage}[t]{0.45\textwidth}
+        \centering
+        % time series body
+        \begin{tikzpicture}[scale=0.75]
+        \begin{semilogyaxis} [
+            xlabel = Epoch,
+            ylabel = Loss,
+        ]
+            \addlegendentry{Training loss}
+            \addplot table[mark=none, x=Step,y=Value, col sep=comma] {./numerical-data/chapter05_result/experiment-extra/6-Unet (DSConvB)/accompaniment/trnloss.csv};
+            \addlegendentry{Validation loss}
+            \addplot table[mark=none, x=Step,y=Value, col sep=comma] {./numerical-data/chapter05_result/experiment-extra/6-Unet (DSConvB)/accompaniment/valloss.csv};
+        \end{semilogyaxis}
+        \end{tikzpicture}
+        % time series body
+        \caption {U-Net6 (DSConvB) 對伴奏軌訓練的 loss 趨勢圖}
+        \label{a:6-Unet (DSConvB):accompaniment}
+    \end{minipage}
+    \hfil
+\end{figure}
+
+\section{U-Net6 (IRB) 的 L1 loss 下降趨勢}
+
+\begin{figure}[htbp]
+    \hfil
+    \begin{minipage}[t]{0.45\textwidth}
+        \centering
+        % time series body
+        \begin{tikzpicture}[scale=0.75]
+        \begin{semilogyaxis} [
+            xlabel = Epoch,
+            ylabel = Loss,
+        ]
+            \addlegendentry{Training loss}
+            \addplot table[mark=none, x=Step,y=Value, col sep=comma] {./numerical-data/chapter05_result/experiment-extra/6-Unet (IRB)/vocals/trnloss.csv};
+            \addlegendentry{Validation loss}
+            \addplot table[mark=none, x=Step,y=Value, col sep=comma] {./numerical-data/chapter05_result/experiment-extra/6-Unet (IRB)/vocals/valloss.csv};
+        \end{semilogyaxis}
+        \end{tikzpicture}
+        % time series body
+        \caption {U-Net6 (IRB) 對主唱軌訓練的 loss 趨勢圖}
+        \label{a:6-Unet (IRB):vocals}
+    \end{minipage}
+    \begin{minipage}[t]{0.45\textwidth}
+        \centering
+        % time series body
+        \begin{tikzpicture}[scale=0.75]
+        \begin{semilogyaxis} [
+            xlabel = Epoch,
+            ylabel = Loss,
+        ]
+            \addlegendentry{Training loss}
+            \addplot table[mark=none, x=Step,y=Value, col sep=comma] {./numerical-data/chapter05_result/experiment-extra/6-Unet (IRB)/accompaniment/trnloss.csv};
+            \addlegendentry{Validation loss}
+            \addplot table[mark=none, x=Step,y=Value, col sep=comma] {./numerical-data/chapter05_result/experiment-extra/6-Unet (IRB)/accompaniment/valloss.csv};
+        \end{semilogyaxis}
+        \end{tikzpicture}
+        % time series body
+        \caption {U-Net6 (IRB) 對伴奏軌訓練的 loss 趨勢圖}
+        \label{a:6-Unet (IRB):accompaniment}
+    \end{minipage}
+    \hfil
+\end{figure}
+
+\section{以 Museval 指標與目前技術比較}
+
+資料來源：
+\begin{itemize}
+    \item \url{https://github.com/facebookresearch/demucs} (FB: Demucs, Tasnet)
+    \item \url{https://github.com/deezer/spleeter} (Deezer: Spleeter)
+    \item \url{https://github.com/f90/Wave-U-Net} (Wave-u-net)
+    \item \url{https://github.com/sigsep/sigsep-mus-2018} (Sony: MMDenseLSTM, MMDenseNet)
+\end{itemize}
+
+\begin{table}[htbp]
+\centering
+\resizebox{\linewidth}{!}{
+\begin{tabular}{|r|c|c|c|c|}
+\hline
+\multicolumn{1}{|l|}{} & \multicolumn{3}{c|}{主唱軌} & Note \\ \hline
+\multicolumn{1}{|l|}{} & \textbf{SDR} & SIR & SAR &  \\ \hline
+\textit{U-Net6 (baseline) w/o filter} & \textit{7.269} & \textit{15.045} & \textit{7.224} & \textit{baseline, extra data} \\ \hline
+\textbf{U-Net6 (baseline) w/ wiener} & 7.648 & 18.593 & 7.436 & \textbf{proposed, extra data} \\ \hline
+\textbf{U-Net6 (Sattn) w/ wiener} & \textbf{7.800} & 18.977 & 7.750 & \textbf{proposed, extra data} \\ \hline
+\textbf{U-Net6\_s (DSConvB) w/ wiener} & 6.780 & 18.525 & 6.314 & \textbf{proposed, extra data} \\ \hline
+\textbf{U-Net6\_s (IRB) w/ ratio mask} & 4.702 & 16.81 & 3.996 & \textbf{proposed, extra data} \\ \hline
+FB: Demucs & 6.721 & 11.704 & 1.740 & extra data \\ \hline
+FB: Tasnet & 6.618 & 12.038 & 2.143 & extra data \\ \hline
+Deezer: Spleeter (2-stem) & 6.361 & 17.362 & 5.679 & extra data \\ \hline
+Wave-u-net (for SVS) & 4.971 & 13.988 & 4.408 & only on musdb18 \\ \hline
+Sony: MMDenseLSTM & 7.159 & 16.485 & 7.484 & extra data \\ \hline
+Sony: MMDenseNet & 6.799 & 15.366 & 7.035 & extra data \\ \hline
+\end{tabular}
+}
+\caption{與先進音樂人聲分離模型比較（主唱軌）}
+\label{tab:proposed-and-other_vocals}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\resizebox{\linewidth}{!}{
+\begin{tabular}{|r|c|c|c|c|}
+\hline
+\multicolumn{1}{|l|}{} & \multicolumn{3}{c|}{伴奏軌} & Note \\ \hline
+\multicolumn{1}{|l|}{} & \textbf{SDR} & SIR & \textbf{SAR} &  \\ \hline
+\textit{U-Net6 (baseline) w/o filter} & \textit{13.805} & \textit{16.785} & \textit{14.52} & \textit{baseline, extra data} \\ \hline
+\textbf{U-Net6 (baseline) w/ wiener} & 14.288 & 20.332 & 14.815 & \textbf{proposed, extra data} \\ \hline
+\textbf{U-Net6 (Sattn) w/ wiener} & \textbf{14.457} & 20.412 & \textbf{15.114} & \textbf{proposed, extra data} \\ \hline
+\textbf{U-Net6\_s (DSConvB) w/ wiener} & 13.520 & 18.680 & 14.202 & \textbf{proposed, extra data} \\ \hline
+\textbf{U-Net6\_s (IRB) w/ ratio mask} & 11.200 & 14.567 & 13.056 & \textbf{proposed, extra data} \\ \hline
+FB: Demucs & 13.441 & 9.334 & 7.014 & extra data \\ \hline
+FB: Tasnet & 12.695 & 11.087 & 7.168 & extra data \\ \hline
+Deezer: Spleeter (2-stem) & 12.510 & 18.201 & 12.911 & extra data \\ \hline
+Wave-u-net (for SVS) & 11.106 & 15.302 & 11.439 & only on musdb18 \\ \hline
+Sony: MMDenseLSTM & 13.737 & 18.499 & 14.583 & extra data \\ \hline
+Sony: MMDenseNet & 13.290 & 18.418 & 14.350 & extra data \\ \hline
+\end{tabular}
+}
+\caption{與先進音樂人聲分離模型比較（伴奏軌）}
+\label{tab:proposed-and-other_accompaniment}
+\end{table}
+
+\clearpage
+
+\section{有無使用 Musdb18 資料集訓練之差異}
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{|r|c|c|}
+\hline
+ & 主唱軌 SDR & 伴奏軌 SDR \\ \hline
+U-Net6 (baseline) & 6.953 & 13.403 \\ \hline
+U-Net6 (baseline, extra) & 7.648 & 14.288 \\ \hline
+U-Net6 (Sattn) & 7.133 & 13.714 \\ \hline
+U-Net6 (Sattn, extra) & 7.8 & 14.457 \\ \hline
+U-Net6 (AG) & 7.097 & 13.526 \\ \hline
+U-Net6 (AG, extra) & 7.437 & 14.121 \\ \hline
+Demucs (extra) & 7.29 & 13.441 \\ \hline
+Spleeter (extra w/o musdb18) & 6.86 & 12.51 \\ \hline
+\end{tabular}
+\caption{使用額外資料訓練在 SDR 上的差異}
+\label{tab:whether_additional_data}
+\end{table}
