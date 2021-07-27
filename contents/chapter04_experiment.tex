@@ -23,7 +23,7 @@
 
 
 \section{評量指標}
-Vincent~\cite{vincent2006performance} 提出的指標評量以比較「原始聲音」與「預測聲音」的差距與量化，在本論文中，探討的是「原始音軌」與「U-Net 模型預測的音軌」。本篇使用的是 Python 套件 Museval~\cite{stoter2018museval}\footnote{https://github.com/sigsep/sigsep-mus-eval}，一個以前述指標包裝而成的套件，由 SegSep\footnote{https://sigsep.github.io/} 團隊維護而成，並在 2018 signal separation evaluation campaign~\cite{stoter20182018} 中所採取，此領域的研究也以此做為評估指標，這些都代表著其重要程度，適合被本論文所採取。Museval 使用 Musdb18~\cite{rafii2017musdb18,musdb18} 的測試集做 Vincent 定義的指標，以該資料集中每一首歌每秒為單位，比較「原始聲音」與「預測聲音」的差距，並以 json 格式儲存後以便上傳至比賽單位，最後做整體評估~\cite{stoter20182018}時，在每首歌中的評量裡取其中位數作為該歌曲的得分，在該資料集中取其中位數作為該資料集的得分。Vincent 定義分離的訊號是由 4 個元素組成，等式如下：
+Vincent~\cite{vincent2006performance} 提出的指標評量以比較「原始聲音」與「預測聲音」的差距與量化，在本論文中，探討的是「原始音軌」與「U-Net 模型預測的音軌」。本篇使用的是 Python 套件 Museval~\cite{stoter2018museval}\footnote{\url{https://github.com/sigsep/sigsep-mus-eval}}，一個以前述指標包裝而成的套件，由 SegSep\footnote{\url{https://sigsep.github.io/}} 團隊維護而成，並在 2018 signal separation evaluation campaign~\cite{stoter20182018} 中所採取，此領域的研究也以此做為評估指標，這些都代表著其重要程度，適合被本論文所採取。Museval 使用 Musdb18~\cite{rafii2017musdb18,musdb18} 的測試集做 Vincent 定義的指標，以該資料集中每一首歌每秒為單位，比較「原始聲音」與「預測聲音」的差距，並以 json 格式儲存後以便上傳至比賽單位，最後做整體評估~\cite{stoter20182018}時，在每首歌中的評量裡取其中位數作為該歌曲的得分，在該資料集中取其中位數作為該資料集的得分。Vincent 定義分離的訊號是由 4 個元素組成，等式如下：
 \begin{equation*}
     \widehat{s_j}=s_\textup{target}+e_\textup{interf}+e_\textup{noise}+e_\textup{artif}
 \end{equation*}
@@ -49,7 +49,7 @@ Vincent 依照上面定義設計了 SDR、SIR 與 SAR 指標：
         SAR:=10\log_{10}\frac{\|s_\textup{target}+e_\textup{interf}+e_\textup{noise}\|^2}{\|e_\textup{artif}\|^2}
         \end{equation*}
 \end{itemize}
-基於上面指標的描述，也根據這篇問答\footnote{\url{https://dsp.stackexchange.com/questions/9610/snr-calculation-in-audio-reconstruction-and-what-is-an-acceptable-value}}，本輪文的研究可泛用在KTV產業界中，主要以提升伴奏質量為優先。可以注意的是，在必要的妥協下，可以捨去 SIR （伴奏中可以出現些許的主唱），專注提升 SAR （減少 U-Net 模型賦予的噪音），使 short-time-fourier-transform 的 window 越大可讓 SIR 提升而讓 SAR 下降。
+基於上面指標的描述，也根據這篇問答\footnote{\href{https://dsp.stackexchange.com/questions/9610/snr-calculation-in-audio-reconstruction-and-what-is-an-acceptable-value}{Stackexchange Q\&A}}，本輪文的研究可泛用在KTV產業界中，主要以提升伴奏質量為優先。可以注意的是，在必要的妥協下，可以捨去 SIR （伴奏中可以出現些許的主唱），專注提升 SAR （減少 U-Net 模型賦予的噪音），使 short-time-fourier-transform 的 window 越大可讓 SIR 提升而讓 SAR 下降。
 
 \section{實驗設計與方法}
 下文裡實驗中的模型，只使用 Musdb18 中的資料以訓練，以本文的實驗基準 U-Net 來說，使用所有的資料集進行完整訓練，大約需要14天，但若只使用 Musdb18 進行訓練，只需2天即可，另外 Demucs~\cite{defossez2019music} 的研究中，也有只使用 Musdb18 作為訓練的實驗，綜觀考量之下，本論文採取此做法以節省時間，但在最後挑出的最好模型，仍會進行一次完整資料集的訓練，確認模型效能。
@@ -296,7 +296,7 @@ $C\times F\times T$ & $1\times 2048$ & Yes & SmoothL1Loss & 8 & 200 & ADAM \\ \c
 \clearpage
 
 \subsection{模型量化實驗}
-本論文中，主要使用 FaceBook 所提出的 QNNPACK~\cite{dukhan2018qnnpack} 對既有 U-Net 做量化至 int8，值得注意的是，在量化之前，依照常規的手法，會先對模型做融合的操作\footnote{https://pytorch.org/tutorials/recipes/recipes/dynamic\_quantization.html}，主要是讓機器在計算 biases 與 ReLU 可以更加快速，其主要的融合方法見圖\ref{quantization2}。
+本論文中，主要使用 FaceBook 所提出的 QNNPACK~\cite{dukhan2018qnnpack} 對既有 U-Net 做量化至 int8，值得注意的是，在量化之前，依照常規的手法，會先對模型做融合的操作\footnote{\url{https://pytorch.org/tutorials/recipes/recipes/dynamic_quantization.html}}，主要是讓機器在計算 biases 與 ReLU 可以更加快速，其主要的融合方法見圖\ref{quantization2}。
 
 \begin{figure}[htbp]
     \hfil

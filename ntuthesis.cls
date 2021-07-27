@@ -666,7 +666,8 @@
           \filldraw [fill=white, opacity=1-\the\numexpr#1] (current page.north east) rectangle (current page.south west);
         \end{tikzpicture}
       \vfill
-}}}}
+}}}
+}
 
 % [插入數位識別]
 % - \InsertDOI{#1}              生成數位識別碼

@@ -41,7 +41,7 @@ Ratio mask filtering 是一種直觀且簡單的作法，許多頻譜預測的�
     \hat{S_i}{(m,f)} = \vert S_i(m,f)^E\vert (\sum_{j\in\textup{I}}\vert S_j(m,f)\vert^E)^{-1}X(m,f)
 \end{equation*}
 $E$ 代表 separation exponent，對於各種不同模型可以調整 ratio 以最佳化。
-圖\ref{oracle_filtering1}與圖\ref{oracle_filtering2}\footnote{https://colab.research.google.com/drive/1Zo6iSPIi6SjOAL7wg8yzVWkS9mjLgjI-?usp=sharing}為實際 ratio mask 對主唱軌預測結果的遮罩與頻譜圖。
+圖\ref{oracle_filtering1}與圖\ref{oracle_filtering2}\footnote{\url{https://colab.research.google.com/drive/1Zo6iSPIi6SjOAL7wg8yzVWkS9mjLgjI-?usp=sharing}}為實際 ratio mask 對主唱軌預測結果的遮罩與頻譜圖。
 
 \begin{figure}[htbp]
     \hfil
@@ -54,7 +54,7 @@ $E$ 代表 separation exponent，對於各種不同模型可以調整 ratio 以�
     \begin{minipage}[t]{0.45\textwidth}
         \centering
         \includegraphics[width=\textwidth]{./figures/chapter02_method/oracle_filtering2.png}
-        \caption {經過 ratio mask 濾過的頻譜}
+        \caption {經過 ratio mask 濾過的主唱軌頻譜}
         \label{oracle_filtering2}
     \end{minipage}
     \hfil
@@ -94,7 +94,7 @@ Wiener filter 是一種古老的訊號學技術，由 Wiener~\cite{wiener1949ext
 本節介紹目前開源的兩大歌聲分離模型，分別使用 U-Net 在頻域與時域中預測分離的訊號。
 
 \subsubsection{Spleeter}
-Spleeter~\cite{hennequin2020spleeter} 遵照了 Laure Prétet ~\cite{pretet2019singing}的訓練驗證方法，實現了 Jansson~\cite{jansson2017singing} 等人於2017年提出的 Deep U-Net 卷積模型（圖\ref{spleeter1}），基於聲音的頻譜圖，開源其程式碼~\footnote{https://github.com/deezer/spleeter}且在聲音訊號分離領域中取得優異的表現。
+Spleeter~\cite{hennequin2020spleeter} 遵照了 Laure Prétet ~\cite{pretet2019singing}的訓練驗證方法，實現了 Jansson~\cite{jansson2017singing} 等人於2017年提出的 Deep U-Net 卷積模型（圖\ref{spleeter1}），基於聲音的頻譜圖，開源其程式碼~\footnote{\url{https://github.com/deezer/spleeter}}且在聲音訊號分離領域中取得優異的表現。
 
 \begin{figure}[htbp]
     \hfil
@@ -124,7 +124,7 @@ Demucs~\cite{defossez2019music} FaceBook 基於 wave-u-net~\cite{stoller2018wave
     \end{minipage}
     \hfil
 \end{figure}
-在 wave-u-net 之上，於 encoder 與 decoder 加上了 GLU 的激活函數，也對 biLSTM 增加了更多通道以改進效果。在時域的訊號分離模型中，獲得很大的效能改進，並且也開源其程式碼\footnote{https://github.com/facebookresearch/demucs}，對歌聲分離領域有很大的貢獻。
+在 wave-u-net 之上，於 encoder 與 decoder 加上了 GLU 的激活函數，也對 biLSTM 增加了更多通道以改進效果。在時域的訊號分離模型中，獲得很大的效能改進，並且也開源其程式碼\footnote{\url{https://github.com/facebookresearch/demucs}}，對歌聲分離領域有很大的貢獻。
 
 \subsection{注意力模型}
 關於注意力模型（attention-based model），必須先談其起源，seq2seq模型的論文自2014年被發表~\cite{vaswani2017attention}以來，使機器在自然語言翻譯領域中取得很好的效果，seq2seq模型基本可以分為兩大部分 encoder 與 decoder，前者會將輸入語句編碼成類向量以表示初始狀態，後者則是使用該類向量預測下一字詞，產生新的文字內容。值得一提的是，輸入給定語句取得翻譯時，並不能觀察期中間產物的向量。
