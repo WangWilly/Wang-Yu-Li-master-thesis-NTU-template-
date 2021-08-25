@@ -19,7 +19,11 @@
 % 封面與口試審定
 % Cover and Verification Letter
 \makecover                          % 論文封面（Cover）
-\makeverification                   % 口試委員審定書（Verification Letter）
+\ifdefined\withcertification        % 口試委員審定書（Verification Letter）
+  \includepdf[pagecommand=\pagenumbering{roman}]{front/certification.pdf}
+\else
+  \makeverification
+\fi   
 
 % 致謝與論文摘要
 % Acknowledgement and Abstract

@@ -1,8 +1,9 @@
 \chapter{實驗結果討論與錯誤分析}
-使用額外資料訓練的結果會在附錄中以表格呈現。
+
+本章將五個實驗的結果以客觀的指標呈現，並說明實際感受與指標的差異，另外，本研究提出新模型的結果中，本章節提及的結果是只使用到 Musdb18 作為訓練集，這幫助我們可以與其他也只使用該資料集訓練的模型做比較，最後使用額外資料訓練的結果會在附錄中以表格呈現。
 
 \section{實驗一：比較 Ratio Mask 與 Wiener Filter 的效果比較}
-U-Net6（baseline）為學長提出的架構，且使用所有第三章提及過的資料集訓練。以 U-Net6（base）為基準，在後處理的時候做 mulitchannel Wiener filter 與 ratio mask filter，以 museval 檢測（見表\ref{filter_result_table} 與圖\ref{filter_result1} ）。在聆聽觀察中，濾波前的伴奏預測軌會有毛邊感（fuzzy sound），為無法完美去除的主唱音軌導致。由圖\ref{filter_result2} 上的主唱軌聲波可明顯看出，濾波可以明顯的提升輸出的效果。mulitchannel Wiener filter 與 ratio mask filter 並無太大差異，但因為實現的細節不同，前者在伴奏軌的效果會比較好，但在聽感上並無太大差異。
+U-Net6（baseline）為先前研究提出的架構，且使用所有第三章提及過的資料集訓練。以 U-Net6（baseline）為基準，在後處理的時候做 mulitchannel Wiener filter 與 ratio mask filter，以 museval 檢測（見表\ref{filter_result_table} 與圖\ref{filter_result1} ）。在聆聽觀察中，濾波前的伴奏預測軌會有毛邊感（fuzzy sound），為無法完美去除的主唱音軌導致。由圖\ref{filter_result2} 上的主唱軌聲波可明顯看出，濾波可以明顯的提升輸出的效果。mulitchannel Wiener filter 與 ratio mask filter 並無太大差異，但因為實現的細節不同，前者在伴奏軌的效果會比較好，但在聽感上並無太大差異。
 
 \begin{table}[htbp]
 \centering
@@ -157,7 +158,7 @@ w/ initial weight 0.2 & 7.345 & 15.839 & 7.347 & 13.894 & 17.24 & 14.62 \\ \hlin
 
 關於第一個方法取得每個頻帶的刪減幅度 $\alpha_b$ ，其方法可能太過簡化，無法枚舉所有可能的排列組合，因為在找尋其中一個頻帶 $b_i$ 時，其餘的頻帶是不去考慮其刪減幅度，這可能也帶表了兩件事：區域的最佳解不能代表全域的解、區域枚舉的 $\alpha_{b_i}$ 粒度可能不夠細。可能使用 fmin search 的方式解此問題，直接定義其數學式找到最佳解，但這必須在未來慢慢探討。
 
-關於第二個方法取得每個頻率的刪減幅度 $\alpha_f$，其問題也分成幾層面。第一個問題，可能架構根本就不適合此問題，需要再確認該輸入資訊的特性，以修改訓練的模型。第二個問題，是否只需第一種方式即可解決問題。這些必須在未來慢慢探討。
+關於第二個方法取得每個頻率的刪減幅度 $\alpha_f$，其問題也分成幾層面。第一個問題，可能架構不適合此問題，需要再確認該輸入資訊的特性，以修改訓練的模型。第二個問題，是否只需第一種解決方案即可。
 
 \clearpage
 
@@ -181,7 +182,7 @@ w/ initial weight 0.2 & 7.345 & 15.839 & 7.347 & 13.894 & 17.24 & 14.62 \\ \hlin
         \end{semilogyaxis}
         \end{tikzpicture}
         % time series body
-        \caption {U-Net (baseline) 對伴奏軌訓練的 loss}
+        \caption {U-Net6 (baseline) 對伴奏軌訓練的 loss}
         \label{e3:6-Unet (base):accompaniment}
     \end{minipage}
     \begin{minipage}[t]{0.45\textwidth}
@@ -223,7 +224,7 @@ w/ initial weight 0.2 & 7.345 & 15.839 & 7.347 & 13.894 & 17.24 & 14.62 \\ \hlin
         \end{semilogyaxis}
         \end{tikzpicture}
         % time series body
-        \caption {U-Net\_s (convtranspose) 對伴奏軌訓練的 loss}
+        \caption {U-Net6\_s (convtranspose) 對伴奏軌訓練的 loss}
         \label{e3:V1 6-Unet (convtranspose):accompaniment}
     \end{minipage}
     \begin{minipage}[t]{0.45\textwidth}

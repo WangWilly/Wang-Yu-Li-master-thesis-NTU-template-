@@ -1,8 +1,7 @@
 \chapter{文獻探討}
-本章會將所有本論文參考到的技術一併介紹，首先會介紹歌聲分離領域中的傳統方法，雖然現今許多資訊科學解決的問題中，皆以深度神經網路解決，但仍必須建立在過往傳統的方法上，才能多面向的確認要解決的目標，並確立實驗的架構。再來，就是本篇論文主要著墨的地方—深度學習法，在現今技術越來越成熟，使用深度學習於歌曲人聲分離領域的做法不斷被提出，其中監督式學習（supervised learning）~\cite{kotsiantis2007supervised}在此領被廣泛的使用到，本論文在這些文獻中受到啟發，並改進既有 U-Net 的效能。
+本章會將所有本論文參考到的技術一併介紹，首先會介紹歌聲分離領域中的傳統方法，雖然現代許多資訊科學解決的問題中，皆以深度神經網路解決，但仍必須建立在過往傳統的方法上，才能多面向的確認要解決的目標，並確立實驗的架構。再來，就是本篇論文主要著墨的地方—深度學習法，在現今技術越來越成熟，使用深度學習於歌曲人聲分離領域的做法不斷被提出，其中監督式學習（supervised learning）~\cite{kotsiantis2007supervised}在此項被廣泛的使用到，本論文在這些文獻中受到啟發，並改進既有 U-Net 的效能。
 
 \section{傳統方法}
-傳統的歌曲人聲分離方法需先將歌曲訊號進行短時傅立葉轉換（short-time Fourier transform）轉成頻譜，再透過分析頻譜進行人聲分離。
 
 \subsection{重複結構擷取}
 重複結構擷取 (repeating pattern extraction)~\cite{rafii2012repeating}。以伴奏軌為重複密集的結構前提，對應主唱軌的結構較為鬆散，以此假設，觀察其重複出現的頻譜結構，以此判斷頻譜中哪些部分屬於伴奏軌，剩餘部分為主唱軌。
@@ -36,7 +35,7 @@
 
 \subsubsection{Ratio Mask Filter}
 % https://hal.inria.fr/hal-02293689/document
-Ratio mask filtering 是一種直觀且簡單的作法，許多頻譜預測的方法~\cite{bao_abdulla_2018,stoter20182018}會再使用此，作為最後輸出訊號的遮罩，並且，可以此為基礎做另外衍伸。
+Ratio mask filtering 是一種直觀且簡單的作法，許多頻譜預測的方法~\cite{bao_abdulla_2018,stoter20182018}會再使用此作為最後輸出訊號的遮罩。
 \begin{equation*}
     \hat{S_i}{(m,f)} = \vert S_i(m,f)^E\vert (\sum_{j\in\textup{I}}\vert S_j(m,f)\vert^E)^{-1}X(m,f)
 \end{equation*}
@@ -94,7 +93,7 @@ Wiener filter 是一種古老的訊號學技術，由 Wiener~\cite{wiener1949ext
 本節介紹目前開源的兩大歌聲分離模型，分別使用 U-Net 在頻域與時域中預測分離的訊號。
 
 \subsubsection{Spleeter}
-Spleeter~\cite{hennequin2020spleeter} 遵照了 Laure Prétet ~\cite{pretet2019singing}的訓練驗證方法，實現了 Jansson~\cite{jansson2017singing} 等人於2017年提出的 Deep U-Net 卷積模型（圖\ref{spleeter1}），基於聲音的頻譜圖，開源其程式碼~\footnote{\url{https://github.com/deezer/spleeter}}且在聲音訊號分離領域中取得優異的表現。
+Spleeter~\cite{hennequin2020spleeter} 遵照了 Laure Prétet ~\cite{pretet2019singing}的訓練驗證方法，實現了 Jansson~\cite{jansson2017singing} 等人於 2017 年提出的 Deep U-Net 卷積模型（圖\ref{spleeter1}），基於聲音的頻譜圖，開源其程式碼~\footnote{\url{https://github.com/deezer/spleeter}}且在聲音訊號分離領域中取得優異的表現。
 
 \begin{figure}[htbp]
     \hfil
@@ -127,9 +126,9 @@ Demucs~\cite{defossez2019music} FaceBook 基於 wave-u-net~\cite{stoller2018wave
 在 wave-u-net 之上，於 encoder 與 decoder 加上了 GLU 的激活函數，也對 biLSTM 增加了更多通道以改進效果。在時域的訊號分離模型中，獲得很大的效能改進，並且也開源其程式碼\footnote{\url{https://github.com/facebookresearch/demucs}}，對歌聲分離領域有很大的貢獻。
 
 \subsection{注意力模型}
-關於注意力模型（attention-based model），必須先談其起源，seq2seq模型的論文自2014年被發表~\cite{vaswani2017attention}以來，使機器在自然語言翻譯領域中取得很好的效果，seq2seq模型基本可以分為兩大部分 encoder 與 decoder，前者會將輸入語句編碼成類向量以表示初始狀態，後者則是使用該類向量預測下一字詞，產生新的文字內容。值得一提的是，輸入給定語句取得翻譯時，並不能觀察期中間產物的向量。
+關於注意力模型（attention-based model），必須先談其起源，seq2seq 模型的論文自 2014 年被發表~\cite{vaswani2017attention} 以來，使機器在自然語言翻譯領域中取得很好的效果，seq2seq 模型基本可以分為兩部分 — encoder 與 decoder，前者會將輸入語句編碼成類向量以表示初始狀態，後者則是使用該類向量預測下一字詞，產生新的文字內容。值得一提的是，輸入給定語句取得翻譯時，並不能觀察其中間產物的向量。
 
-seq2seq模型看似強大，但也有個不可忽視的問題，當模型接受最後一個狀態的語句輸出作為 encoder 的輸入，產生其向量狀態時，RNN模型會有機率忘記太遠的資訊，即使加上LSTM~\cite{gers1999learning}或GLU仍無法妥善解決。此時，注意力模型就起到一個重要的作用，其度量了相似性。若當前的輸入語句與狀態向量越類似，那當前輸入的權重就越大。接下來會以台大李宏毅\footnote{\url{https://speech.ee.ntu.edu.tw/~tlkagk/}}老師的投影片為輔助，稍微解釋機器取得權重的方法（圖\ref{attention-based_model1}），decoder 在計算前會有一組模型參數 $z^0$，會與每個隱狀態 $h^i$ 進行匹配的運算，計算 $z^0$ 與 $h^i$ 的相似度最後得到注意價值度（attention score）$\alpha_0^i$，
+seq2seq 模型看似強大，但也有個不可忽視的問題，當模型接受最後一個狀態的語句輸出作為 encoder 的輸入，產生其向量狀態時，RNN 模型會有機率忘記太遠的資訊，即使加上 LSTM~\cite{gers1999learning} 或 GLU 仍無法妥善解決。注意力機制能度量相似性，若當前的輸入語句與狀態向量越類似，那當前輸入的權重就越大。接下來會以台大李宏毅\footnote{\url{https://speech.ee.ntu.edu.tw/~tlkagk/}}老師的投影片為輔助，稍微解釋機器取得權重的方法（圖\ref{attention-based_model1}），decoder 在計算前會有一組模型參數 $z^0$，會與每個隱狀態 $h^i$ 進行匹配的運算，計算 $z^0$ 與 $h^i$ 的相似度最後得到注意價值度（attention score）$\alpha_0^i$，
 \begin{figure}[htbp]
     \hfil
     \begin{minipage}[t]{0.45\textwidth}
@@ -150,10 +149,10 @@ seq2seq模型看似強大，但也有個不可忽視的問題，當模型接受�
     \hfil
 \end{figure}
 
-這邊已經稍微介紹注意力模型的大致做法，接下來會講到其各自不同的實現方法。
+介紹完注意力機制的做法，接下來介紹各自不同的實現方法。
 
 \subsubsection{Self-attention}
-Y. Liu 等人的研究中~\cite{liu2020voice}，將原本在單一維度上使用的 self-attention 改成在雙維度上使用，以利頻譜在 U-Net 上的預測效果，原文指出：相同吉他和弦可能每 10 秒重複一次，對區域性的 CNN filter 來說太長，以致於在 Dense-UNet 中無法抓到這樣的聲音重複資訊；即使使用 BLSTM RNN 進行增強，MMDenseLSTM 仍無法處理跳躍性的聲音重複資訊，因為它只能著重在時間較近的記憶資訊。使用 self-attention 可以注意全局上所有位置的相同序列，並計算區域位置上相同序列的響應值給模型，此方法已經在機器翻譯與圖片生成\footnote{\url{https://github.com/brain-research/self-attention-gan}}領域中獲得採用~\cite{vaswani2017attention,zhang2019self}，在改造雙維度上 self-attention 架構上，需要著重頻譜於時間維度上的資訊，期望可以找出音樂訊號中的規律，見圖\ref{self-attention1} 可以看到 self-attention 架構如何應用應用在歌聲分離之上。
+Y. Liu 等人的研究中~\cite{liu2020voice}，將原本在單一維度上使用的 self-attention 改成在雙維度上使用，以利頻譜在 U-Net 上的預測效果，原文指出：相同吉他和弦可能每 10 秒重複一次，對區域性的 CNN filter 來說太長，以致於在 Dense-UNet 中無法抓到這樣的聲音重複資訊；即使使用 BLSTM RNN 進行增強，MMDenseLSTM 仍無法處理跳躍性的聲音重複資訊，因為它只能著重在時間較近的記憶資訊。使用 self-attention 可以注意全局上所有位置的相同序列，並計算區域位置上相同序列的響應值給模型，此方法已經在機器翻譯與圖片生成\footnote{\url{https://github.com/brain-research/self-attention-gan}}領域中獲得採用~\cite{vaswani2017attention,zhang2019self}，self-attention 可幫助 U-Net 取得音樂訊號中的規律，見圖\ref{self-attention1} 可以看到 self-attention 架構如何應用應用在歌聲分離之上。
 \begin{figure}[htbp]
     \hfil
     \begin{minipage}[t]{0.80\textwidth}
@@ -193,7 +192,7 @@ Khened~\cite{khened2019fully} 與 Roth~\cite{roth2018spatial} 等人為了提升
 
 \section{模型壓縮方法}
 % 模型壓縮的東西~\cite{buciluǎ2006model}
-雖然目前的硬體設備隨著摩爾定律越來越強，但人們也對低功耗的需求也與日俱增，套用在端點裝置如：手機、工廠監控晶片或是配置低的筆記型電腦。模型剪枝不只探討縮小也研究更快的執行，可以在實時的狀態下使用，如此一來可以更加貼近人們的生活。
+雖然目前的硬體設備隨著摩爾定律越來越強，但人們也對低功耗的需求也與日俱增，套用在端點裝置如：手機、工廠監控晶片或是麥克風。模型剪枝不只探討縮小也研究更快的執行，可以在實時的狀態下使用，如此一來可以更加貼近人們的生活。
 % https://zhuanlan.zhihu.com/p/138059904
 
 
@@ -286,7 +285,7 @@ Khened~\cite{khened2019fully} 與 Roth~\cite{roth2018spatial} 等人為了提升
 
 
 \subsection{模型量化}
-模型量化由模型與量化兩詞組成。在深度學習領域下，模型指的是神經網路。而量化是指降低精準度，通常以定點（通常為「int8」）近似浮點數模型，從而降低模型儲存於記憶體的消耗，也有機會可以加速模型在預測的速度，下式與圖 表示基本的線性量化方法。
+模型量化由模型與量化兩詞組成。在深度學習領域下，模型指的是神經網路。而量化是指降低精準度，通常以定點（通常為「int8」的資料型態）近似浮點數模型，從而降低模型儲存於記憶體的消耗，也有機會可以加速模型在預測的速度，下式與圖\ref{quantization1} 表示基本的線性量化方法。
 
 \begin{itemize}
     \item 量化（Quantize）

@@ -1,10 +1,13 @@
 \chapter{研究方法}
+
+在本次研究中，U-Net (baseline) 模型是使用 PyTorch 實現，我們依照此架構往下研究改進，基於歌聲分離的特性，本章節會介紹五個實驗方法，並在最後以客觀的評量指標檢驗各自改進的效果。
+
 \section{問題定義}
 使用深度學習在歌聲分離領域上，本論文採取監督式學習訓練，取音樂訊號的頻譜（spectrogram）後，對其做值域轉換成為模型訓練使用的特徵，模型的輸出應為主唱（vocals stem）與伴奏（accompaniment stem）的頻譜，現在主流的架構建立於 U-Net~\cite{ronneberger2015u,jansson2017singing,hennequin2020spleeter,defossez2019music} 之上，憑藉其在圖像分割領域卓越的表現，期許在頻譜圖也能有所突破。對於 U-Net 的輸出，是否能經過簡單的處理就能提高其預測質量也是一個值得探討的問題。另外，在實際部屬 U-Net 模型時有個不可漠視的問題，其龐大的架構不適合在行動裝置上與晶片上搭載，會面臨模型預測時間長與裝置記憶體不足的問題。本論文的研究建立在現有的 U-Net 模型架構上進行分析與改良，主要有：
 \begin{itemize}
 	\item[1.] 基於 ratio mask filter 與 Wiener filter 理論，善加利用現有的 U-Net 模型之預測頻譜圖，以提升輸出質量。
 	\item[2.] 研究不同的 U-Net 架構，本篇會著重在注意力模型 attention gate 與 self-attention 的基礎上做延伸，設計一新的 U-Net 模型，並測試對於分離歌聲的效果。
-	\item[3.] 基於先前頻譜刪減（spectral subtraction）~\cite{boll1979suppression} 的研究，探討其問題與設法提升其效果。
+	\item[3.] 基於先前頻譜刪減（spectrum subtraction）~\cite{boll1979suppression} 的研究，探討其問題與設法提升其效果。
 	\item[4.] U-Net 模型壓縮實驗，使用模型剪枝（model pruning）與模型量化（model quantization）來達成。
 \end{itemize}
 
@@ -52,7 +55,7 @@ Vincent 依照上面定義設計了 SDR、SIR 與 SAR 指標：
 基於上面指標的描述，也根據這篇問答\footnote{\href{https://dsp.stackexchange.com/questions/9610/snr-calculation-in-audio-reconstruction-and-what-is-an-acceptable-value}{Stackexchange Q\&A}}，本輪文的研究可泛用在KTV產業界中，主要以提升伴奏質量為優先。可以注意的是，在必要的妥協下，可以捨去 SIR （伴奏中可以出現些許的主唱），專注提升 SAR （減少 U-Net 模型賦予的噪音），使 short-time-fourier-transform 的 window 越大可讓 SIR 提升而讓 SAR 下降。
 
 \section{實驗設計與方法}
-下文裡實驗中的模型，只使用 Musdb18 中的資料以訓練，以本文的實驗基準 U-Net 來說，使用所有的資料集進行完整訓練，大約需要14天，但若只使用 Musdb18 進行訓練，只需2天即可，另外 Demucs~\cite{defossez2019music} 的研究中，也有只使用 Musdb18 作為訓練的實驗，綜觀考量之下，本論文採取此做法以節省時間，但在最後挑出的最好模型，仍會進行一次完整資料集的訓練，確認模型效能。
+下文裡實驗中的模型，只使用 Musdb18 中的資料以訓練，以本文的實驗基準 U-Net 來說，使用所有的資料集進行完整訓練，大約需要 14 天，但若只使用 Musdb18 進行訓練，只需2天即可，另外 Demucs~\cite{defossez2019music} 的研究中，也有只使用 Musdb18 作為訓練的實驗，綜觀考量之下，本論文採取此做法以節省時間。最後挑出的最值得的模型，再進行一次完整額外資料集的訓練，以確認模型效能。
 
 \subsection{神經模型訓練設定}
 \begin{itemize}
@@ -90,7 +93,7 @@ Vincent 依照上面定義設計了 SDR、SIR 與 SAR 指標：
 \end{figure}
 
 \subsection{濾波實驗}
-本節說明濾波實驗的緣由。基於既有已訓練的 U-Net baseline 模型，採取適合的後處理也很重要，本論文主要探討 ratio mask filter 與 Wiener filter 作為後處理對模型預測的增幅。Python 套件 norbert~\cite{liutkus2019sigsep}\footnote{\url{https://github.com/sigsep/norbert}} 將此包裝，並在本實驗過程中使用。既有 U-Net 的輸出為頻譜域，要將其轉換為時間域，過去的方法是直接與混音軌的相位合併，再使用 iSTFT 轉回（圖\ref{Filter1}），本論文將 U-Net 的輸出頻譜轉換為一個濾波器，再對混音軌的 STFT 域做過濾（圖\ref{Filter2}），並在下章比對其效能。
+本節說明濾波實驗。基於既有已訓練的 U-Net baseline 模型，採取適合的後處理尤為重要，本論文主要探討 ratio mask filter 與 Wiener filter 作為後處理對模型預測的增幅。Python 套件 norbert~\cite{liutkus2019sigsep}\footnote{\url{https://github.com/sigsep/norbert}} 將此包裝，並在本實驗過程中使用。既有 U-Net 的輸出為頻譜域，要將其轉換為時間域，過去的方法是直接與混音軌的相位合併，再使用 iSTFT 轉回（圖\ref{Filter1}），本論文將 U-Net 的輸出頻譜轉換為一個濾波器，再對混音軌的 STFT 域做過濾（圖\ref{Filter2}），並在下章比對其效能。
 
 \begin{figure}[htbp]
     \hfil
@@ -163,7 +166,7 @@ Vincent 依照上面定義設計了 SDR、SIR 與 SAR 指標：
     \hfil
 \end{figure}
 
-枚舉所有 $\alpha_f$ 難以實現，所以考慮第二種方式，也就是使用簡單的梯度下降架構來訓練，期望每一個 frequency bin （在此研究中總量都為2048個）都能各自算出最好的 $\alpha_f$，改善第一種方式的問題，這邊主要使用最簡單的手法訓練，環繞在一個提出的主架構上（圖\ref{spectrogram_subtraction_NNmethod1}），所有調整架構的實驗中，該架構表現最為出色，其餘架構只以表\ref{spectrogram_subtraction_NNmethod} 呈現，主要討論此方法與第一種方法的差異，而非討論中間梯度下降架構的調整，最終的效果會在下章仔細的探討與分析。梯度下降架構的訓練只在 Musdb18 的訓練集上（共100首），測試集在 Musdb18 的測試集上（共50首），其聲音訊號經由 STFT ，取其 2048 個 frequency bin （F） 與 216 個 frame（T），最後評估的指標使用 Museval。
+枚舉所有 $\alpha_f$ 難以實現，所以考慮第二種方式，也就是使用簡單的梯度下降架構來訓練，期望每一個 frequency bin （在此研究中總量都為 2048 個）都能各自算出最好的 $\alpha_f$，改善第一種方式的問題，這邊主要使用最簡單的手法訓練，環繞在一個提出的主架構上（圖\ref{spectrogram_subtraction_NNmethod1}），所有調整架構的實驗中，該架構表現最為出色，其餘架構只以表\ref{spectrogram_subtraction_NNmethod} 呈現，主要討論此方法與第一種方法的差異，而非討論中間梯度下降架構的調整，最終的效果會在下章仔細的探討與分析。梯度下降架構的訓練只在 Musdb18 的訓練集上（共 100 首），測試集在 Musdb18 的測試集上（共 50 首），其聲音訊號經由 STFT ，取其 2048 個 frequency bin （F） 與 216 個 frame（T），最後評估的指標使用 Museval。
 
 \begin{table}[htbp]
 \centering
@@ -194,7 +197,7 @@ $C\times F\times T$ & $1\times 2048$ & Yes & SmoothL1Loss & 8 & 200 & ADAM \\ \c
 \end{figure}
 
 \subsection{注意力模型實驗}
-基於 Demucs~\cite{defossez2019music} 與 MMDenseLSTM~\cite{takahashi2018mmdenselstm} 在歌聲分離領域的出眾表現，除了皆以 U-Net 為雛形做衍伸之外，其模型都有個共通點，都使用到了 LSTM~\cite{gers1999learning} 架構，這邊要先稍微提及，此架構起初用在處理長時間序列，可讓深度神經模型觀察到前後文的重複性，透過加入遺忘閥，在遇到長時間輸入訊號時，依舊有不錯的學習效果，但是由於模型結構複雜，因此需要花費較長的時間。歌聲分離領域裡，需要「快」與「準」，除了要準確的預測輸出的音樂訊號，還要夠快，既有的 U-Net 模型預測已經需要不少的時間，如何在觀察前後文的重複性，又要讓模型預測時間不會因此拉長是值得探討的，此時 Google 團隊錄取 2017NIPS\footnote{\url{https://nips.cc/Conferences/2017/Videos}} 的論文「Attention is all you need」~\cite{vaswani2017attention} ，其架構拋棄 RNN 的架構取而代之的是 self-attention 的注意力機制，可以在翻譯領域上有很好的效果，但不導致架構的預測速度。
+基於 Demucs~\cite{defossez2019music} 與 MMDenseLSTM~\cite{takahashi2018mmdenselstm} 在歌聲分離領域的出眾表現，除了皆以 U-Net 為雛形做衍伸之外，其模型都有個共通點，都使用到了 LSTM~\cite{gers1999learning} 架構，可讓深度神經模型觀察到前後文的重複性，透過加入遺忘閥，在遇到長時間輸入訊號時，依舊有不錯的學習效果，但是由於模型結構複雜，因此需要花費較長的時間。歌聲分離領域裡，需要「快」與「準」，除了要準確的預測輸出的音樂訊號，還要夠快，既有的 U-Net 模型預測已經需要不少的時間，如何在觀察前後文的重複性，又要讓模型預測時間不會因此拉長是值得探討的，此時 Google 團隊錄取 2017NIPS\footnote{\url{https://nips.cc/Conferences/2017/Videos}} 的論文「Attention is all you need」~\cite{vaswani2017attention} ，其架構拋棄 RNN 的架構取而代之的是 self-attention 的注意力機制，可以在翻譯領域上有很好的效果，但不導致架構的預測速度。
 % file:///C:/Users/hp/Documents/MIR_Lab/report/2Sep2020_report/2Sep2020_report.pdf
 
 % [attention - transformer]
